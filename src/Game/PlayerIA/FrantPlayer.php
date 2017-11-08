@@ -41,7 +41,7 @@ class FrantPlayer extends Player
         // How can i display the result of each round ? $this->prettyDisplay()
         // -------------------------------------    -----------------------------------------------------
 
-        $choice = parent::scissorsChoice();
+        $choice = parent::rockChoice();
 
         return $choice;
     }
