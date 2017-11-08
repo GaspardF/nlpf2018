@@ -27,7 +27,7 @@ class FrantPlayer extends Player
         $choices = $this->result->getChoicesFor($this->opponentSide);
         // Get the last 3 hands, if they are the same counter them
         $nbRound = (int) $this->result->getNbRound();
-        if ($nbRound > 2 && $choices[$nbRound - 1] == $choices[$nbRound - 2] &&
+        /*if ($nbRound > 2 && $choices[$nbRound - 1] == $choices[$nbRound - 2] &&
             $choices[$nbRound - 2] == $choices[$nbRound - 3]) {
 
           if ($choices[$nbRound - 1] == parent::rockChoice()) {
@@ -39,22 +39,27 @@ class FrantPlayer extends Player
           elseif ($choices[$nbRound - 1] == parent::scissorsChoice()) {
             return parent::rockChoice();
           }
-        }
+        }*/
 
         // Search in all the hands
         foreach ($choices as $c) {
-          if ($nbRound > 0 && $this->result->getLastScoreFor($this->mySide) == 0) {
+          $myChoices = $this->result->getChoicesFor($this->mySide);
+          $lastOp = $this->result->getLastChoiceFor($this->opponentSide);
+          if ($nbRound > 2 && $myChoices[$nbRound - 2] == $lastOp) {
             $loses++;
+          }
+          else {
+            $loses = 0;
           }
           if ($loses >= 3) {
             // Expects the opponent to counter our last choice
-            if ($this->result->getLastScoreFor($this->mySide) == parent::rockChoice()) {
+            if ($this->result->getLastChoiceFor($this->mySide) == parent::rockChoice()) {
               return parent::scissorsChoice();
             }
-            elseif ($this->result->getLastScoreFor($this->mySide) == parent::paperChoice()) {
+            elseif ($this->result->getLastChoiceFor($this->mySide) == parent::paperChoice()) {
               return parent::rockChoice();
             }
-            elseif ($this->result->getLastScoreFor($this->mySide) == parent::scissorsChoice()) {
+            elseif ($this->result->getLastChoiceFor($this->mySide) == parent::scissorsChoice()) {
               return parent::paperChoice();
             }
           }
