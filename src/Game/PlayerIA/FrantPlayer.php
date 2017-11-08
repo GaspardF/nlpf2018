@@ -41,8 +41,41 @@ class FrantPlayer extends Player
         // How can i display the result of each round ? $this->prettyDisplay()
         // -------------------------------------    -----------------------------------------------------
 
-        $choice = parent::rockChoice();
+        // First basic program in case of emergency push
+        //$choice = parent::rockChoice();
 
-        return $choice;
+        // Random (for test)
+        /*$number = mt_rand(1, 3);
+        $choice = ($number == 1) ?  parent::rockChoice() :
+        (($number == 2) ? parent::paperChoice() : parent::scissorsChoice());*/
+
+
+        // Search the most used hand in all the choices and counter it
+        $rock = 0;
+        $paper = 0;
+        $scissors = 0;
+        $choices = $this->result->getChoicesFor($this->opponentSide);
+        foreach ($choices as $c) {
+          if ($c == parent::rockChoice()) {
+            $rock++;
+          }
+          elseif ($c == parent::paperChoice()) {
+            $paper++;
+          }
+          elseif ($c == parent::scissorsChoice()) {
+            $scissors++;
+          }
+        }
+        if ($rock > $paper && $rock > $scissors) {
+          return parent::paperChoice();
+        }
+        elseif ($paper > $rock && $paper > $scissors) {
+          return parent::scissorsChoice();
+        }
+        elseif ($scissors > $rock && $scissors > $paper) {
+          return parent::rockChoice();
+        }
+
+        return parent::rockChoice();
     }
 };
