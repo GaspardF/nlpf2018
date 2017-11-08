@@ -19,9 +19,11 @@ class FrantPlayer extends Player
     {
         // Search the most used hand in all the choices and counter it
         // + check the opponent last 3 hands and counter them if all the same
+        // + change stategy if lose too much
         $rock = 0;
         $paper = 0;
         $scissors = 0;
+        $loses = 0;
         $choices = $this->result->getChoicesFor($this->opponentSide);
         // Get the last 3 hands, if they are the same counter them
         $nbRound = (int) $this->result->getNbRound();
@@ -41,6 +43,21 @@ class FrantPlayer extends Player
 
         // Search in all the hands
         foreach ($choices as $c) {
+          if ($nbRound > 0 && $this->result->getLastScoreFor($this->mySide) == 0) {
+            $loses++;
+          }
+          if ($loses >= 3) {
+            // Expects the opponent to counter our last choice
+            if ($this->result->getLastScoreFor($this->mySide) == parent::rockChoice()) {
+              return parent::scissorsChoice();
+            }
+            elseif ($this->result->getLastScoreFor($this->mySide) == parent::paperChoice()) {
+              return parent::rockChoice();
+            }
+            elseif ($this->result->getLastScoreFor($this->mySide) == parent::scissorsChoice()) {
+              return parent::paperChoice();
+            }
+          }
           if ($c == parent::rockChoice()) {
             $rock++;
           }
@@ -61,7 +78,7 @@ class FrantPlayer extends Player
           return parent::rockChoice();
         }
 
-        return parent::rockChoice();
+        return parent::paperChoice();
 
         // First basic program in case of emergency push
         /*$choice = parent::rockChoice();
