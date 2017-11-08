@@ -43,26 +43,6 @@ class FrantPlayer extends Player
 
         // Search in all the hands
         foreach ($choices as $c) {
-          $myChoices = $this->result->getChoicesFor($this->mySide);
-          $lastOp = $this->result->getLastChoiceFor($this->opponentSide);
-          if ($nbRound > 2 && $myChoices[$nbRound - 2] == $lastOp) {
-            $loses++;
-          }
-          else {
-            $loses = 0;
-          }
-          if ($loses >= 3) {
-            // Expects the opponent to counter our last choice
-            if ($this->result->getLastChoiceFor($this->mySide) == parent::rockChoice()) {
-              return parent::scissorsChoice();
-            }
-            elseif ($this->result->getLastChoiceFor($this->mySide) == parent::paperChoice()) {
-              return parent::rockChoice();
-            }
-            elseif ($this->result->getLastChoiceFor($this->mySide) == parent::scissorsChoice()) {
-              return parent::paperChoice();
-            }
-          }
           if ($c == parent::rockChoice()) {
             $rock++;
           }
